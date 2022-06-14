@@ -3,8 +3,9 @@ import utils as iplib
 import qrcode
 from PIL import Image
 import numpy as np
+import os
 
-SECRET = "rispro"
+SECRET = os.getenv('SECRET')
 
 def get_data_ids(n=29):
     ids = np.array([[(j,i) for i in range(n)] for j in range(n)])

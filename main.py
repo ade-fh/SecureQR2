@@ -1,5 +1,9 @@
 from secureqr import generateSQR, template_matching
 import numpy as np
+import os
+
+SECRET = os.getenv('SECRET')
+print(SECRET)
 
 box_size = 5
 v=2
