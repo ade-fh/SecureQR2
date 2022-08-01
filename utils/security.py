@@ -52,7 +52,7 @@ salt_len = 12
 # Functions
 #-----------------------------------------------------------------------------
 
-def passwd(passphrase=None, algorithm='sha1'):
+def passwd(passphrase=None, algorithm='sha1',salt=None):
     """Generate hashed password and salt for use in notebook configuration.
 
     In the notebook configuration, set `c.NotebookApp.password` to
@@ -91,7 +91,7 @@ def passwd(passphrase=None, algorithm='sha1'):
             raise UsageError('No matching passwords found. Giving up.')
 
     h = hashlib.new(algorithm)
-    salt = ('%0' + str(salt_len) + 'x') % random.getrandbits(4 * salt_len)
+    salt = salt if salt else ('%0' + str(salt_len) + 'x') % random.getrandbits(4 * salt_len) 
     h.update(cast_bytes(passphrase, 'utf-8') + encode(salt, 'ascii'))
 
     return ':'.join((algorithm, salt, h.hexdigest()))
