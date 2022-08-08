@@ -1,3 +1,3 @@
 # SecureQR
 
-My Change
+run using `uvicorn main:app --reload`

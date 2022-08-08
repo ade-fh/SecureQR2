@@ -1,5 +1,4 @@
-from pickle import TRUE
-from secureqr import generateSQR, template_matching
+from secureqr import generateSQR, template_matching, percentage_matching
 import numpy as np
 from PIL import Image
 import pandas as pd
@@ -24,8 +23,10 @@ for idx in range(100):
             if image[i+half,j+half]>0: dot_string+='1'
             else: dot_string+='0'
 
-    match = template_matching(f"halo{idx}",data_string,dot_string,box_size,version=v)
-    print(match)
+    match = template_matching(f"halo{idx}",data_string,dot_string,version=v)
+    percent = percentage_matching(f"halo{idx}",data_string,dot_string,version=v)
+
+    print(match,percent)
     if match or True:
         Image.fromarray(img*255).save(f"data/{dir}/{idx}.png")
         datainfo.append([f"halo{idx}",data_string,dot_string])

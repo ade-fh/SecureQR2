@@ -97,7 +97,7 @@ def passwd(passphrase=None, algorithm='sha1',salt=None):
     return ':'.join((algorithm, salt, h.hexdigest()))
 
 
-def passwd_check(hashed_passphrase, passphrase):
+def passwd_check(hashed_passphrase, passphrase, exact_match=True):
     """Verify that a given passphrase matches its hashed version.
 
     Parameters
@@ -138,7 +138,7 @@ def passwd_check(hashed_passphrase, passphrase):
 
     h.update(cast_bytes(passphrase, 'utf-8') + cast_bytes(salt, 'ascii'))
 
-    return h.hexdigest() == pw_digest
+    return h.hexdigest() == pw_digest if exact_match else  h.hexdigest()
 
 
 

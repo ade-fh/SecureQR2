@@ -128,7 +128,7 @@ def generateSQR(data:str, version:int=3, box_size:int=5):
     return np_img
 
 
-def template_matching(data,seq,dots, version=3):
+def get_hash_salt(data,seq,dots, version=3):
     n = 17 + version*4
     seq = np.array([i for i in seq]).reshape(n,n)
     dots = np.array([i for i in dots]).reshape(n,n)
@@ -148,5 +148,22 @@ def template_matching(data,seq,dots, version=3):
     
     hash = str(hex(int(hash,2)))[2:]
     hash = '0'*(40-len(hash)) + hash
+    return hash, salt
 
+def template_matching(data,seq,dots, version=3):
+    hash, salt = get_hash_salt(data,seq,dots,version)
     return iplib.security.passwd_check(f'sha1:{salt}:{hash}',SECRET+data)   
+
+def percentage_matching(data,seq,dots, version=3):
+    hash, salt = get_hash_salt(data,seq,dots,version)
+    hash_diggest = iplib.security.passwd_check(f'sha1:{salt}:{hash}',SECRET+data,exact_match=False) 
+    s ='a68df677475c2b47b6e86d0467eec97ac5f4b85a'
+    num_of_bits=160
+    scale=16
+
+
+    hash = bin(int(hash, scale))[2:].zfill(num_of_bits)
+    hash_diggest = bin(int(hash_diggest, scale))[2:].zfill(num_of_bits)
+
+    match = sum([1 if x==y else 0 for x, y in zip(hash, hash_diggest)])/1.6
+    return match 
