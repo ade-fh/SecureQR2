@@ -5,7 +5,7 @@ import pandas as pd
 import os
 
 box_size = 5
-v=2
+v=3
 dir = f"v{v}b{box_size}"
 os.makedirs("data/"+dir,exist_ok=True)
 datainfo = []
@@ -28,8 +28,8 @@ for idx in range(100):
 
     match = template_matching(f"halo{idx}",data_string,dot_string,version=v)
     percent = percentage_matching(f"halo{idx}",data_string,dot_string,version=v)
-
     print(match,percent)
+    
     if match or True:
         Image.fromarray(img*255).save(f"data/{dir}/{idx}.png")
         datainfo.append([f"halo{idx}",data_string,dot_string])

@@ -14,11 +14,7 @@ templates = Jinja2Templates(directory="templates")
 async def generateSQR(v:int,box:int,data:str):       
     return ET.tostring(secureqr.generateSVGSQR(data,v,box))
 
-@app.get("/verify_sqr", response_class=HTMLResponse)
-async def verify(v:int,data:str,seq:str,dot:str):       
-    return secureqr.percentage_matching(data,seq,dot,version=v)
-
-
-
-
-
+@app.get("/verify_sqr")
+async def verify(v:int,data:str,seq:str,dot:str):  
+    print("here...")     
+    return  {"match_percent": secureqr.percentage_matching(data,seq,dot,version=v)}
