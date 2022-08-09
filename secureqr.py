@@ -157,7 +157,7 @@ def template_matching(data,seq,dots, version=3):
 def percentage_matching(data,seq,dots, version=3):
     hash, salt = get_hash_salt(data,seq,dots,version)
     hash_diggest = iplib.security.passwd_check(f'sha1:{salt}:{hash}',SECRET+data,exact_match=False) 
-    s ='a68df677475c2b47b6e86d0467eec97ac5f4b85a'
+    
     num_of_bits=160
     scale=16
 

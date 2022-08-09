@@ -16,7 +16,7 @@ async def generateSQR(v:int,box:int,data:str):
 
 @app.get("/verify_sqr", response_class=HTMLResponse)
 async def verify(v:int,data:str,seq:str,dot:str):       
-    return {'status':'fake'}
+    return secureqr.percentage_matching(data,seq,dot,version=v)
 
 
 

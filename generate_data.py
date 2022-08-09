@@ -22,6 +22,9 @@ for idx in range(100):
             else: data_string+='0'
             if image[i+half,j+half]>0: dot_string+='1'
             else: dot_string+='0'
+    
+    print(f"halo{idx}")
+    print(data_string,dot_string)
 
     match = template_matching(f"halo{idx}",data_string,dot_string,version=v)
     percent = percentage_matching(f"halo{idx}",data_string,dot_string,version=v)
