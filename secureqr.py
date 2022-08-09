@@ -167,3 +167,4 @@ def percentage_matching(data,seq,dots, version=3):
 
     match = sum([1 if x==y else 0 for x, y in zip(hash, hash_diggest)])/1.6
     return match 
+

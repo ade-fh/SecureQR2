@@ -29,11 +29,10 @@ for idx in range(100):
     match = template_matching(f"halo{idx}",data_string,dot_string,version=v)
     percent = percentage_matching(f"halo{idx}",data_string,dot_string,version=v)
     print(match,percent)
-    
+
     if match or True:
         Image.fromarray(img*255).save(f"data/{dir}/{idx}.png")
         datainfo.append([f"halo{idx}",data_string,dot_string])
 
 df = pd.DataFrame(datainfo)
 df.to_csv(f"data/{dir}.csv",header=False,index=False)
-# print(datainfo)
