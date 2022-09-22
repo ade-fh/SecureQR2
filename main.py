@@ -1,8 +1,10 @@
+from distutils.log import debug
 import json
+import uvicorn
 from fastapi import APIRouter, FastAPI, Request
 from fastapi import File, UploadFile, FastAPI
 from fastapi.responses import HTMLResponse,FileResponse
-import secureqr
+import lib.secureqr as secureqr
 from lxml import etree as ET
 from fastapi.templating import Jinja2Templates
 
@@ -20,6 +22,9 @@ async def verify(v:int,data:str,seq:str,dot:str):
     print("here...")     
     return  {"match_percent": secureqr.percentage_matching(data,seq,dot,version=v)}
 
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="localhost", port=8000,debug=True)
 
 # @app.post("/verify_isqr")
 # def upload(file: UploadFile = File(...)):

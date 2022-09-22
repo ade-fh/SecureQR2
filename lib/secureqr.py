@@ -1,16 +1,15 @@
 import numpy as np
-import utils as iplib
+from .utils.security import passwd, passwd_check
 import qrcode
 from PIL import Image
 import numpy as np
-import os
 
 # use lxml for generating the QR manually
 from lxml import etree as ET
 
 # SECRET = os.getenv('SECRET')
 SECRET = 'rispro'
-SALT = ''.join(format(ord(x), 'x') for x in SECRET)
+# SALT = ''.join(format(ord(x), 'x') for x in SECRET)
 
 def get_data_ids(n=29):
     ids = np.array([[[j,i] for i in range(n)] for j in range(n)])
@@ -35,7 +34,6 @@ def ids_salt(n=29,seed=0):
     return unique_ids[rand]
 
   
-
 def get_img_and_dots(data:str, version:int=3):
     border=0
     n = 17 + version*4
@@ -43,7 +41,7 @@ def get_img_and_dots(data:str, version:int=3):
                   error_correction=qrcode.constants.ERROR_CORRECT_H, 
                   box_size=1,
                   border=0)
-    _,salt,hash = iplib.passwd(SECRET+str(data)).split(":")   
+    _,salt,hash = passwd(SECRET+str(data)).split(":")   
 
     np_img = np.asanyarray(img).astype('uint8')
 
@@ -100,7 +98,7 @@ def generateSQR(data:str, version:int=3, box_size:int=5):
                   box_size=box_size,
                   border=border)
     
-    _,salt,hash = iplib.passwd(SECRET+str(data)).split(":")    
+    _,salt,hash = passwd(SECRET+str(data)).split(":")    
     
     
     bsalt = bin(int(salt, 16))[2:]
@@ -152,11 +150,11 @@ def get_hash_salt(data,seq,dots, version=3):
 
 def template_matching(data,seq,dots, version=3):
     hash, salt = get_hash_salt(data,seq,dots,version)
-    return iplib.security.passwd_check(f'sha1:{salt}:{hash}',SECRET+data)   
+    return passwd_check(f'sha1:{salt}:{hash}',SECRET+data)   
 
 def percentage_matching(data,seq,dots, version=3):
     hash, salt = get_hash_salt(data,seq,dots,version)
-    hash_diggest = iplib.security.passwd_check(f'sha1:{salt}:{hash}',SECRET+data,exact_match=False) 
+    hash_diggest = passwd_check(f'sha1:{salt}:{hash}',SECRET+data,exact_match=False) 
     
     num_of_bits=160
     scale=16

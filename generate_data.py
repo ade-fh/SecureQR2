@@ -1,4 +1,4 @@
-from secureqr import generateSQR, template_matching, percentage_matching
+from lib.secureqr import generateSQR, template_matching, percentage_matching
 import numpy as np
 from PIL import Image
 import pandas as pd
