@@ -56,7 +56,8 @@ from scipy.spatial import distance
 
 def read_sqr(im):
     qrDecoder = cv2.QRCodeDetector()
-    myqr = qrDecoder.detectAndDecode(im)
+    im_filter = median = cv2.medianBlur(im,5)
+    myqr = qrDecoder.detectAndDecode(im_filter)
     top = myqr[1][0][0].astype(int)
     bottom = myqr[1][0][2].astype(int)+1
     qim = im[top[0]:bottom[0],top[1]:bottom[1]].astype(float)

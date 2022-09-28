@@ -37,17 +37,17 @@ async def watermarkSQR(v:int,quant:int,data:str):
 def upload(v:int,quant:int,pct:float, file: UploadFile = File(...)):
     try:
         contents = file.file.read()
-        im = np.asanyarray(Image.open(io.BytesIO(contents)))
-        data,s,(p,q) = secureqr.compare2template(im,v,quant,pct)        
-     
+        im = np.asanyarray(Image.open(io.BytesIO(contents)).convert("L"))
+        data,s,(p,q) = secureqr.compare2template(im,v,quant,pct)    
+        p = p.tolist()
+        q = q.tolist()         
         # with open(file.filename, 'wb') as f:
         #     f.write(contents)
     except Exception as e:
         return {"message": "There was an error uploading the file","error":str(e)}
     finally:
         file.file.close()
-    p = p.tolist()
-    q = q.tolist()
+    
 
     return {"data":data,"score": s,"actual-dist": p, "scanned-dist": q}
     
