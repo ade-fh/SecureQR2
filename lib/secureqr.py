@@ -86,9 +86,9 @@ def compute_KL(qim,scan,quant=16,pct=0.2,metric='JS'):
     return rel_entr(*pq).sum() if metric=="KL" else distance.jensenshannon(*pq), pq  
 
 def compare2template(im, qr_ver = 3, quant=16, pct=0.2, metric='JS'):
-    data ,qim = read_sqr(im) 
+    data ,qim_scan = read_sqr(im) 
     img,_ = make_secureQR(data, qr_ver = qr_ver, quant=quant)
-    _,qim_scan = read_sqr(img) 
+    _,qim = read_sqr(img) 
     return (data,)+compute_KL(qim,qim_scan,quant,pct,metric)
 
 
