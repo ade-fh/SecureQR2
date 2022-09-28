@@ -48,7 +48,8 @@ def upload(v:int,quant:int,pct:float, file: UploadFile = File(...)):
         file.file.close()
     p = p.tolist()
     q = q.tolist()
-    return {"data":data,"KL-div-score": s,"actual-dist": p, "scanned-dist": q}
+
+    return {"data":data,"score": s,"actual-dist": p, "scanned-dist": q}
     
 
 

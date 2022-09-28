@@ -3,6 +3,8 @@ from .utils.security import passwd, passwd_check
 import qrcode
 from PIL import Image
 import numpy as np
+from numpy.random import default_rng
+import hashlib
 
 # use lxml for generating the QR manually
 from lxml import etree as ET
@@ -11,12 +13,15 @@ from lxml import etree as ET
 SECRET = 'rispro'
 # SALT = ''.join(format(ord(x), 'x') for x in SECRET)
 
+
 def generate_watermark(data,secret,quant=16,size=(100,100),rprop=100):
-    dist  = [0 if i==0 else int(i*256/quant)-1 for i in range(quant+1)]
-    np.random.seed(abs(hash(data+secret))%2**32)
-    p=np.random.choice([i for i in range(rprop)], size = quant+1)
+    dist  = [0 if i==0 else int(i*256/quant)-1 for i in range(quant+1)]    
+    s = data+secret    
+    seed = abs(int(hashlib.sha1(s.encode("utf-8")).hexdigest(), 16))%2**32
+    rng = np.random.default_rng(seed)    
+    p=rng.choice([i for i in range(rprop)], size = quant+1)
     p=p/p.sum()
-    watermark = np.random.choice(dist,size=size,p=p)
+    watermark = rng.choice(dist,size=size,p=p)
     return watermark.astype('uint8')
 
 def make_secureQR(data:str,secret:str=SECRET,                  
