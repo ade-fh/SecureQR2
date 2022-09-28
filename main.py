@@ -37,7 +37,9 @@ async def watermarkSQR(v:int,quant:int,data:str):
 def upload(v:int,quant:int,pct:float, file: UploadFile = File(...)):
     try:
         contents = file.file.read()
-        im = np.asanyarray(Image.open(io.BytesIO(contents)).convert("L"))
+        n = (20 + v*4)*10
+        img = Image.open(io.BytesIO(contents)).convert("L").resize((n,n))
+        im = np.asanyarray(img)
         data,s,(p,q) = secureqr.compare2template(im,v,quant,pct)    
         p = p.tolist()
         q = q.tolist()         
