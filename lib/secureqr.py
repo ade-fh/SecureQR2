@@ -14,11 +14,11 @@ SECRET = 'rispro'
 # SALT = ''.join(format(ord(x), 'x') for x in SECRET)
 
 def generate_watermark(data,secret,quant=16,size=(100,100),rprop=100):
-    dist  = [0 if i==0 else int(i*256/quant)-1 for i in range(quant+1)]    
+    dist  = [int((i+0.5)*256/quant) for i in range(quant)]    
     s = data+secret    
     seed = abs(int(hashlib.sha1(s.encode("utf-8")).hexdigest(), 16))%2**32
     random.seed(seed) 
-    p=random.choices([i for i in range(rprop)], k = quant+1)
+    p=random.choices([i for i in range(rprop)], k = quant)
     watermark = random.choices(dist,weights=p,k=size[0]**2)
     watermark = np.array(watermark).reshape(size)
     return watermark.astype('uint8')
@@ -79,6 +79,7 @@ def compute_KL(qim,scan,quant=16,pct=0.2,metric='JS'):
         half = l//2
         r = int(0.5*pct*l)             
         wtm = q[half-r:half+r,half-r:half+r]
+        wtm = cv2.Sobel(wtm,cv2.CV_64F,1,1,ksize=3)
         dist, *note = np.histogram(wtm.ravel(),bins=quant)
         p = dist/dist.sum()
         pq.append(p)        
