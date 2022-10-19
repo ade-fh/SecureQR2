@@ -4,6 +4,7 @@ test.ipynb
 watermark
 
 *.svg
+test2
 
 # Allow
 !test.ipynb
