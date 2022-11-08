@@ -3,6 +3,9 @@ data
 watermark
 
 *.svg
+*.png
+*.jpg
+*.pdf
 
 # Allow
 !test.ipynb
